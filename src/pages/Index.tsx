@@ -1,11 +1,12 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
-import { Wallet, Vote, Shield, Users, CheckCircle, Clock } from 'lucide-react';
+import { Wallet, Vote, Shield, Users, CheckCircle, Clock, Plus, X } from 'lucide-react';
+import detectEthereumProvider from '@metamask/detect-provider';
 
 interface Proposal {
   id: string;
@@ -23,6 +24,13 @@ const Index = () => {
   const [walletAddress, setWalletAddress] = useState('');
   const [hasVoted, setHasVoted] = useState<string[]>([]);
   const [isConnecting, setIsConnecting] = useState(false);
+  const [showCreateProposal, setShowCreateProposal] = useState(false);
+  const [newProposal, setNewProposal] = useState({
+    title: '',
+    description: '',
+    options: ['', ''],
+    endDate: ''
+  });
 
   // Mock proposals data
   const [proposals, setProposals] = useState<Proposal[]>([
@@ -58,26 +66,41 @@ const Index = () => {
     }
   ]);
 
-  const connectWallet = async () => {
+  const connectMetaMask = async () => {
     setIsConnecting(true);
     
     try {
-      // Simulate wallet connection
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const provider = await detectEthereumProvider();
       
-      // Mock wallet address
-      const mockAddress = 'CvK8...mN9p';
-      setWalletAddress(mockAddress);
-      setIsWalletConnected(true);
-      
-      toast({
-        title: "Wallet Connected",
-        description: `Connected to ${mockAddress}`,
-      });
+      if (provider) {
+        // Request account access
+        const accounts = await (window as any).ethereum.request({
+          method: 'eth_requestAccounts',
+        });
+        
+        if (accounts.length > 0) {
+          const address = accounts[0];
+          const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`;
+          setWalletAddress(shortAddress);
+          setIsWalletConnected(true);
+          
+          toast({
+            title: "MetaMask Connected",
+            description: `Connected to ${shortAddress}`,
+          });
+        }
+      } else {
+        toast({
+          title: "MetaMask Not Found",
+          description: "Please install MetaMask to connect your wallet.",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
+      console.error('Error connecting to MetaMask:', error);
       toast({
         title: "Connection Failed",
-        description: "Please make sure you have a Solana wallet installed.",
+        description: "Failed to connect to MetaMask. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -91,7 +114,75 @@ const Index = () => {
     setHasVoted([]);
     toast({
       title: "Wallet Disconnected",
-      description: "Your wallet has been disconnected.",
+      description: "Your MetaMask wallet has been disconnected.",
+    });
+  };
+
+  const addOption = () => {
+    setNewProposal(prev => ({
+      ...prev,
+      options: [...prev.options, '']
+    }));
+  };
+
+  const removeOption = (index: number) => {
+    if (newProposal.options.length > 2) {
+      setNewProposal(prev => ({
+        ...prev,
+        options: prev.options.filter((_, i) => i !== index)
+      }));
+    }
+  };
+
+  const updateOption = (index: number, value: string) => {
+    setNewProposal(prev => ({
+      ...prev,
+      options: prev.options.map((option, i) => i === index ? value : option)
+    }));
+  };
+
+  const createProposal = () => {
+    if (!newProposal.title || !newProposal.description || !newProposal.endDate) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (newProposal.options.some(option => !option.trim())) {
+      toast({
+        title: "Invalid Options",
+        description: "All voting options must be filled in.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const proposal: Proposal = {
+      id: (proposals.length + 1).toString(),
+      title: newProposal.title,
+      description: newProposal.description,
+      options: newProposal.options,
+      votes: new Array(newProposal.options.length).fill(0),
+      endDate: newProposal.endDate,
+      status: 'active',
+      totalVotes: 0
+    };
+
+    setProposals(prev => [proposal, ...prev]);
+    setNewProposal({
+      title: '',
+      description: '',
+      options: ['', ''],
+      endDate: ''
+    });
+    setShowCreateProposal(false);
+
+    toast({
+      title: "Proposal Created",
+      description: "Your proposal has been created successfully.",
     });
   };
 
@@ -99,7 +190,7 @@ const Index = () => {
     if (!isWalletConnected) {
       toast({
         title: "Wallet Not Connected",
-        description: "Please connect your wallet to vote.",
+        description: "Please connect your MetaMask wallet to vote.",
         variant: "destructive",
       });
       return;
@@ -115,7 +206,6 @@ const Index = () => {
     }
 
     try {
-      // Simulate blockchain transaction
       toast({
         title: "Processing Vote",
         description: "Your vote is being recorded on the blockchain...",
@@ -123,7 +213,6 @@ const Index = () => {
 
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      // Update vote count
       setProposals(prev => prev.map(proposal => {
         if (proposal.id === proposalId) {
           const newVotes = [...proposal.votes];
@@ -175,6 +264,17 @@ const Index = () => {
             </div>
             
             <div className="flex items-center space-x-4">
+              {isWalletConnected && (
+                <Button 
+                  onClick={() => setShowCreateProposal(!showCreateProposal)}
+                  variant="outline"
+                  className="border-blue-200 text-blue-600 hover:bg-blue-50"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Proposal
+                </Button>
+              )}
+              
               {isWalletConnected ? (
                 <div className="flex items-center space-x-3">
                   <div className="flex items-center space-x-2 bg-green-50 px-3 py-2 rounded-lg">
@@ -187,12 +287,12 @@ const Index = () => {
                 </div>
               ) : (
                 <Button 
-                  onClick={connectWallet} 
+                  onClick={connectMetaMask} 
                   disabled={isConnecting}
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                 >
                   <Wallet className="h-4 w-4 mr-2" />
-                  {isConnecting ? 'Connecting...' : 'Connect Wallet'}
+                  {isConnecting ? 'Connecting...' : 'Connect MetaMask'}
                 </Button>
               )}
             </div>
@@ -202,6 +302,79 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
+        {/* Create Proposal Form */}
+        {showCreateProposal && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle>Create New Proposal</CardTitle>
+              <CardDescription>Create a new voting proposal for the campus community</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Title</label>
+                <Input
+                  value={newProposal.title}
+                  onChange={(e) => setNewProposal(prev => ({ ...prev, title: e.target.value }))}
+                  placeholder="Enter proposal title"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Description</label>
+                <Input
+                  value={newProposal.description}
+                  onChange={(e) => setNewProposal(prev => ({ ...prev, description: e.target.value }))}
+                  placeholder="Enter proposal description"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">Voting Options</label>
+                {newProposal.options.map((option, index) => (
+                  <div key={index} className="flex items-center space-x-2 mb-2">
+                    <Input
+                      value={option}
+                      onChange={(e) => updateOption(index, e.target.value)}
+                      placeholder={`Option ${index + 1}`}
+                    />
+                    {newProposal.options.length > 2 && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => removeOption(index)}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                <Button variant="outline" size="sm" onClick={addOption}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Option
+                </Button>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">End Date</label>
+                <Input
+                  type="date"
+                  value={newProposal.endDate}
+                  onChange={(e) => setNewProposal(prev => ({ ...prev, endDate: e.target.value }))}
+                />
+              </div>
+
+              <div className="flex space-x-3">
+                <Button onClick={createProposal} className="bg-gradient-to-r from-blue-600 to-purple-600">
+                  Create Proposal
+                </Button>
+                <Button variant="outline" onClick={() => setShowCreateProposal(false)}>
+                  Cancel
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Hero Section */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -335,17 +508,17 @@ const Index = () => {
           <div className="mt-12 text-center">
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-md mx-auto">
               <Wallet className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-              <h4 className="font-semibold text-blue-900 mb-2">Connect Your Wallet to Vote</h4>
+              <h4 className="font-semibold text-blue-900 mb-2">Connect Your MetaMask to Vote</h4>
               <p className="text-blue-700 text-sm mb-4">
-                Connect your Solana wallet to participate in campus voting
+                Connect your MetaMask wallet to participate in campus voting
               </p>
               <Button 
-                onClick={connectWallet} 
+                onClick={connectMetaMask} 
                 disabled={isConnecting}
                 className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
               >
                 <Wallet className="h-4 w-4 mr-2" />
-                {isConnecting ? 'Connecting...' : 'Connect Wallet'}
+                {isConnecting ? 'Connecting...' : 'Connect MetaMask'}
               </Button>
             </div>
           </div>
