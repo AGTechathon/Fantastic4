@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
 import { Wallet, Vote, Shield, Users, CheckCircle, Clock, Plus, X, Trophy, BarChart3 } from 'lucide-react';
 import detectEthereumProvider from '@metamask/detect-provider';
+import Navigation from '@/components/Navigation';
 
 interface Proposal {
   id: string;
@@ -73,7 +74,6 @@ const Index = () => {
       const provider = await detectEthereumProvider();
       
       if (provider) {
-        // Request account access
         const accounts = await (window as any).ethereum.request({
           method: 'eth_requestAccounts',
         });
@@ -251,7 +251,6 @@ const Index = () => {
     const maxVotes = Math.max(...proposal.votes);
     const winnerIndex = proposal.votes.findIndex(votes => votes === maxVotes);
     
-    // Check for tie
     const tieCount = proposal.votes.filter(votes => votes === maxVotes).length;
     if (tieCount > 1) {
       return { option: 'Tie', index: -1, votes: maxVotes, percentage: getVotePercentage(maxVotes, proposal.totalVotes) };
@@ -267,58 +266,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-lg">
-                <Vote className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  CampusVote
-                </h1>
-                <p className="text-sm text-gray-600">Decentralized Student Voting</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              {isWalletConnected && (
-                <Button 
-                  onClick={() => setShowCreateProposal(!showCreateProposal)}
-                  variant="outline"
-                  className="border-blue-200 text-blue-600 hover:bg-blue-50"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Create Proposal
-                </Button>
-              )}
-              
-              {isWalletConnected ? (
-                <div className="flex items-center space-x-3">
-                  <div className="flex items-center space-x-2 bg-green-50 px-3 py-2 rounded-lg">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    <span className="text-sm font-medium text-green-800">{walletAddress}</span>
-                  </div>
-                  <Button variant="outline" onClick={disconnectWallet}>
-                    Disconnect
-                  </Button>
-                </div>
-              ) : (
-                <Button 
-                  onClick={connectMetaMask} 
-                  disabled={isConnecting}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                >
-                  <Wallet className="h-4 w-4 mr-2" />
-                  {isConnecting ? 'Connecting...' : 'Connect MetaMask'}
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
+      {/* Navigation */}
+      <Navigation 
+        isWalletConnected={isWalletConnected}
+        walletAddress={walletAddress}
+        onConnectWallet={connectMetaMask}
+        onDisconnectWallet={disconnectWallet}
+        isConnecting={isConnecting}
+      />
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
@@ -393,6 +348,19 @@ const Index = () => {
               </div>
             </CardContent>
           </Card>
+        )}
+
+        {/* Create Proposal Button */}
+        {isWalletConnected && !showCreateProposal && (
+          <div className="mb-8 text-center">
+            <Button 
+              onClick={() => setShowCreateProposal(true)}
+              className="bg-gradient-to-r from-blue-600 to-purple-600"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Create New Proposal
+            </Button>
+          </div>
         )}
 
         {/* Hero Section */}
