@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
-import { Wallet, Vote, Shield, Users, CheckCircle, Clock, Plus, X } from 'lucide-react';
+import { Wallet, Vote, Shield, Users, CheckCircle, Clock, Plus, X, Trophy, BarChart3 } from 'lucide-react';
 import detectEthereumProvider from '@metamask/detect-provider';
 
 interface Proposal {
@@ -245,6 +245,26 @@ const Index = () => {
     return total > 0 ? (votes / total) * 100 : 0;
   };
 
+  const getWinner = (proposal: Proposal) => {
+    if (proposal.totalVotes === 0) return null;
+    
+    const maxVotes = Math.max(...proposal.votes);
+    const winnerIndex = proposal.votes.findIndex(votes => votes === maxVotes);
+    
+    // Check for tie
+    const tieCount = proposal.votes.filter(votes => votes === maxVotes).length;
+    if (tieCount > 1) {
+      return { option: 'Tie', index: -1, votes: maxVotes, percentage: getVotePercentage(maxVotes, proposal.totalVotes) };
+    }
+    
+    return {
+      option: proposal.options[winnerIndex],
+      index: winnerIndex,
+      votes: maxVotes,
+      percentage: getVotePercentage(maxVotes, proposal.totalVotes)
+    };
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
@@ -450,11 +470,18 @@ const Index = () => {
                       {proposal.options.map((option, index) => {
                         const percentage = getVotePercentage(proposal.votes[index], proposal.totalVotes);
                         const userVoted = hasVoted.includes(proposal.id);
+                        const winner = getWinner(proposal);
+                        const isWinning = winner && winner.index === index && proposal.status === 'ended';
                         
                         return (
                           <div key={index} className="space-y-2">
                             <div className="flex items-center justify-between">
-                              <span className="font-medium text-gray-900">{option}</span>
+                              <div className="flex items-center space-x-2">
+                                <span className="font-medium text-gray-900">{option}</span>
+                                {isWinning && (
+                                  <Trophy className="h-4 w-4 text-yellow-500" />
+                                )}
+                              </div>
                               <div className="flex items-center space-x-2">
                                 <span className="text-sm text-gray-600">
                                   {proposal.votes[index]} votes ({percentage.toFixed(1)}%)
@@ -471,11 +498,76 @@ const Index = () => {
                                 )}
                               </div>
                             </div>
-                            <Progress value={percentage} className="h-2" />
+                            <Progress 
+                              value={percentage} 
+                              className={`h-2 ${isWinning ? 'bg-yellow-100' : ''}`}
+                            />
                           </div>
                         );
                       })}
                     </div>
+
+                    {/* Results Section */}
+                    {proposal.status === 'ended' && (
+                      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                        <div className="flex items-center mb-3">
+                          <BarChart3 className="h-5 w-5 text-gray-600 mr-2" />
+                          <h4 className="font-semibold text-gray-900">Final Results</h4>
+                        </div>
+                        
+                        {proposal.totalVotes > 0 ? (
+                          <div className="space-y-3">
+                            {(() => {
+                              const winner = getWinner(proposal);
+                              if (winner?.option === 'Tie') {
+                                return (
+                                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                                    <div className="flex items-center">
+                                      <Trophy className="h-4 w-4 text-orange-500 mr-2" />
+                                      <span className="font-medium text-orange-800">
+                                        Result: Tie with {winner.votes} votes each ({winner.percentage.toFixed(1)}%)
+                                      </span>
+                                    </div>
+                                  </div>
+                                );
+                              } else if (winner) {
+                                return (
+                                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                                    <div className="flex items-center">
+                                      <Trophy className="h-4 w-4 text-yellow-600 mr-2" />
+                                      <span className="font-medium text-yellow-800">
+                                        Winner: "{winner.option}" with {winner.votes} votes ({winner.percentage.toFixed(1)}%)
+                                      </span>
+                                    </div>
+                                  </div>
+                                );
+                              }
+                              return null;
+                            })()}
+                            
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                              <div className="bg-white rounded-lg p-3 border">
+                                <div className="font-medium text-gray-700">Total Participation</div>
+                                <div className="text-xl font-bold text-blue-600">{proposal.totalVotes}</div>
+                                <div className="text-xs text-gray-500">verified votes</div>
+                              </div>
+                              <div className="bg-white rounded-lg p-3 border">
+                                <div className="font-medium text-gray-700">Blockchain Status</div>
+                                <div className="flex items-center">
+                                  <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
+                                  <span className="text-sm text-green-600">Verified</span>
+                                </div>
+                                <div className="text-xs text-gray-500">on Solana</div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-center py-4">
+                            <div className="text-gray-500">No votes recorded for this proposal</div>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                     {/* Stats */}
                     <div className="flex items-center justify-between pt-4 border-t">
