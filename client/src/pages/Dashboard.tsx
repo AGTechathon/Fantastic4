@@ -62,68 +62,68 @@ const Dashboard = () => {
               <p className="text-gray-600">Track your voting activity and impact on campus decisions</p>
             </div>
 
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Total Votes Cast</p>
-                  <p className="text-3xl font-bold text-blue-600">{stats.totalVotes}</p>
-                </div>
-                <Vote className="h-10 w-10 text-blue-500" />
-              </div>
-            </CardContent>
-          </Card>
+            {/* Stats Overview */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Total Votes Cast</p>
+                      <p className="text-3xl font-bold text-blue-600">{stats.totalVotes}</p>
+                    </div>
+                    <Vote className="h-10 w-10 text-blue-500" />
+                  </div>
+                </CardContent>
+              </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Proposals Participated</p>
-                  <p className="text-3xl font-bold text-green-600">{stats.proposalsParticipated}</p>
-                </div>
-                <BarChart3 className="h-10 w-10 text-green-500" />
-              </div>
-            </CardContent>
-          </Card>
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Proposals Participated</p>
+                      <p className="text-3xl font-bold text-green-600">{stats.proposalsParticipated}</p>
+                    </div>
+                    <BarChart3 className="h-10 w-10 text-green-500" />
+                  </div>
+                </CardContent>
+              </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Voting Accuracy</p>
-                  <p className="text-3xl font-bold text-purple-600">{stats.votingAccuracy}%</p>
-                </div>
-                <Trophy className="h-10 w-10 text-purple-500" />
-              </div>
-            </CardContent>
-          </Card>
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Voting Accuracy</p>
+                      <p className="text-3xl font-bold text-purple-600">{stats.votingAccuracy}%</p>
+                    </div>
+                    <Trophy className="h-10 w-10 text-purple-500" />
+                  </div>
+                </CardContent>
+              </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Campus Rank</p>
-                  <p className="text-3xl font-bold text-orange-600">#{stats.rankPosition}</p>
-                </div>
-                <Users className="h-10 w-10 text-orange-500" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Campus Rank</p>
+                      <p className="text-3xl font-bold text-orange-600">#{stats.rankPosition}</p>
+                    </div>
+                    <Users className="h-10 w-10 text-orange-500" />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Recent Activity */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Clock className="h-5 w-5 mr-2" />
-                Recent Activity
-              </CardTitle>
-              <CardDescription>Your latest voting actions and proposal interactions</CardDescription>
-            </CardHeader>
-            <CardContent>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Recent Activity */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Clock className="h-5 w-5 mr-2" />
+                    Recent Activity
+                  </CardTitle>
+                  <CardDescription>Your latest voting actions and proposal interactions</CardDescription>
+                </CardHeader>
+                <CardContent>
               <div className="space-y-4">
                 {recentActivity.map((activity) => (
                   <div key={activity.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
