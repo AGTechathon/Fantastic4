@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import { Vote, User, Shield, BarChart3, Info, Home } from 'lucide-react';
 
 interface NavigationProps {
@@ -73,33 +74,50 @@ const Navigation = ({
                 <span>About</span>
               </Link>
 
-              {isWalletConnected && (
-                <>
-                  <Link 
-                    href="/profile" 
-                    className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
-                      isActive('/profile') ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:text-blue-600'
-                    }`}
-                  >
-                    <User className="h-4 w-4" />
-                    <span>Profile</span>
-                  </Link>
+              <SignedIn>
+                <Link 
+                  href="/profile" 
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
+                    isActive('/profile') ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:text-blue-600'
+                  }`}
+                >
+                  <User className="h-4 w-4" />
+                  <span>Profile</span>
+                </Link>
 
-                  <Link 
-                    href="/admin" 
-                    className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
-                      isActive('/admin') ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:text-blue-600'
-                    }`}
-                  >
-                    <Shield className="h-4 w-4" />
-                    <span>Admin</span>
-                  </Link>
-                </>
-              )}
+                <Link 
+                  href="/admin" 
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
+                    isActive('/admin') ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:text-blue-600'
+                  }`}
+                >
+                  <Shield className="h-4 w-4" />
+                  <span>Admin</span>
+                </Link>
+              </SignedIn>
             </nav>
           </div>
           
           <div className="flex items-center space-x-4">
+            {/* Clerk Authentication */}
+            <SignedOut>
+              <SignInButton>
+                <Button variant="outline">
+                  Sign In
+                </Button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton 
+                appearance={{
+                  elements: {
+                    avatarBox: "h-8 w-8"
+                  }
+                }}
+              />
+            </SignedIn>
+
+            {/* MetaMask Wallet Connection */}
             {isWalletConnected ? (
               <div className="flex items-center space-x-3">
                 <div className="flex items-center space-x-2 bg-green-50 px-3 py-2 rounded-lg">
@@ -107,7 +125,7 @@ const Navigation = ({
                   <span className="text-sm font-medium text-green-800">{walletAddress}</span>
                 </div>
                 <Button variant="outline" onClick={onDisconnectWallet}>
-                  Disconnect
+                  Disconnect Wallet
                 </Button>
               </div>
             ) : (
