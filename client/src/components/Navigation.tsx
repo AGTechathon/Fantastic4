@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Vote, User, Shield, BarChart3, Info, Home } from 'lucide-react';
 
@@ -19,10 +19,10 @@ const Navigation = ({
   onDisconnectWallet, 
   isConnecting 
 }: NavigationProps) => {
-  const location = useLocation();
+  const [location] = useLocation();
 
   const isActive = (path: string) => {
-    return location.pathname === path;
+    return location === path;
   };
 
   return (
@@ -30,7 +30,7 @@ const Navigation = ({
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-8">
-            <Link to="/" className="flex items-center space-x-3">
+            <Link href="/" className="flex items-center space-x-3">
               <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-lg">
                 <Vote className="h-6 w-6 text-white" />
               </div>
@@ -44,7 +44,7 @@ const Navigation = ({
 
             <nav className="hidden md:flex items-center space-x-6">
               <Link 
-                to="/" 
+                href="/" 
                 className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
                   isActive('/') ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:text-blue-600'
                 }`}
@@ -54,7 +54,7 @@ const Navigation = ({
               </Link>
               
               <Link 
-                to="/dashboard" 
+                href="/dashboard" 
                 className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
                   isActive('/dashboard') ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:text-blue-600'
                 }`}
@@ -64,7 +64,7 @@ const Navigation = ({
               </Link>
 
               <Link 
-                to="/about" 
+                href="/about" 
                 className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
                   isActive('/about') ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:text-blue-600'
                 }`}
@@ -76,7 +76,7 @@ const Navigation = ({
               {isWalletConnected && (
                 <>
                   <Link 
-                    to="/profile" 
+                    href="/profile" 
                     className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
                       isActive('/profile') ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:text-blue-600'
                     }`}
@@ -86,7 +86,7 @@ const Navigation = ({
                   </Link>
 
                   <Link 
-                    to="/admin" 
+                    href="/admin" 
                     className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
                       isActive('/admin') ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:text-blue-600'
                     }`}
