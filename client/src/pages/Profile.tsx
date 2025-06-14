@@ -9,15 +9,16 @@ import { toast } from '@/hooks/use-toast';
 import { User, Mail, School, Calendar, Shield, Edit, Save, X } from 'lucide-react';
 
 const Profile = () => {
+  const { user } = useUser();
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({
-    name: 'John Smith',
-    email: 'john.smith@university.edu',
+    name: user?.fullName || 'Student Name',
+    email: user?.primaryEmailAddress?.emailAddress || 'student@university.edu',
     studentId: 'ST2021001234',
     year: 'Junior',
     major: 'Computer Science',
-    joinDate: '2024-01-15',
-    verified: true
+    joinDate: user?.createdAt ? new Date(user.createdAt).toISOString().split('T')[0] : '2024-01-15',
+    verified: user?.emailAddresses?.[0]?.verification?.status === 'verified'
   });
 
   const [editedProfile, setEditedProfile] = useState(profile);

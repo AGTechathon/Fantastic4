@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useUser, SignedIn, SignedOut, SignInButton } from '@clerk/clerk-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -7,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { BarChart3, Vote, Trophy, Clock, TrendingUp, Users, CheckCircle } from 'lucide-react';
 
 const Dashboard = () => {
+  const { user } = useUser();
   const [timeRange, setTimeRange] = useState('month');
 
   // Mock data for dashboard
@@ -33,12 +35,32 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Voting Dashboard</h1>
-          <p className="text-gray-600">Track your voting activity and impact on campus decisions</p>
+    <>
+      <SignedOut>
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
+          <Card className="w-full max-w-md">
+            <CardHeader className="text-center">
+              <CardTitle className="text-2xl">Authentication Required</CardTitle>
+              <CardDescription>Please sign in to access your voting dashboard</CardDescription>
+            </CardHeader>
+            <CardContent className="flex justify-center">
+              <SignInButton>
+                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                  Sign In to Continue
+                </Button>
+              </SignInButton>
+            </CardContent>
+          </Card>
         </div>
+      </SignedOut>
+      
+      <SignedIn>
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+          <div className="container mx-auto px-4 py-8">
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, {user?.firstName}!</h1>
+              <p className="text-gray-600">Track your voting activity and impact on campus decisions</p>
+            </div>
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -189,9 +211,11 @@ const Dashboard = () => {
               </div>
             </div>
           </CardContent>
-        </Card>
-      </div>
-    </div>
+          </Card>
+        </div>
+          </div>
+        </SignedIn>
+    </>
   );
 };
 
