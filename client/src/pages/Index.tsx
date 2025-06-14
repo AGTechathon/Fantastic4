@@ -265,7 +265,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gray-50">
       {/* Navigation */}
       <Navigation 
         isWalletConnected={isWalletConnected}
@@ -339,7 +339,7 @@ const Index = () => {
               </div>
 
               <div className="flex space-x-3">
-                <Button onClick={createProposal} className="bg-gradient-to-r from-blue-600 to-purple-600">
+                <Button onClick={createProposal} className="bg-blue-600 hover:bg-blue-700">
                   Create Proposal
                 </Button>
                 <Button variant="outline" onClick={() => setShowCreateProposal(false)}>

@@ -56,7 +56,7 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <div className="text-center mb-16">
@@ -67,7 +67,7 @@ const About = () => {
             Revolutionizing student democracy through blockchain technology. CampusVote ensures 
             every student voice is heard with complete transparency, security, and trust.
           </p>
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-lg text-white max-w-4xl mx-auto">
+          <div className="bg-blue-600 p-6 rounded-lg text-white max-w-4xl mx-auto">
             <h2 className="text-2xl font-bold mb-4">Our Mission</h2>
             <p className="text-lg">
               To empower students with a secure, transparent, and accessible voting platform that 

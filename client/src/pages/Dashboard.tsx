@@ -37,7 +37,7 @@ const Dashboard = () => {
   return (
     <>
       <SignedOut>
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <Card className="w-full max-w-md">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl">Authentication Required</CardTitle>
@@ -45,7 +45,7 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent className="flex justify-center">
               <SignInButton>
-                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                <Button className="bg-blue-600 hover:bg-blue-700">
                   Sign In to Continue
                 </Button>
               </SignInButton>
@@ -55,7 +55,7 @@ const Dashboard = () => {
       </SignedOut>
       
       <SignedIn>
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <div className="min-h-screen bg-gray-50">
           <div className="container mx-auto px-4 py-8">
             <div className="mb-8">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, {user?.firstName}!</h1>
