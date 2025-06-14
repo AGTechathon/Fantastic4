@@ -14,7 +14,7 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const publishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+const publishableKey = "pk_test_a2Vlbi13aGFsZS0yMi5jbGVyay5hY2NvdW50cy5kZXYk";
 
 if (!publishableKey) {
   console.error("Missing Clerk Publishable Key");

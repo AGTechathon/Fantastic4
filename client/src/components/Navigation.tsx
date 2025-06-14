@@ -36,9 +36,13 @@ const Navigation = ({
                 <Vote className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-blue-600">
+                {/* <h1 className="text-2xl font-bold text-blue-600">
                   CampusVote
-                </h1>
+                </h1> */}
+                <h1 className="text-4xl font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 drop-shadow-md">
+  CampusVote
+</h1>
+
                 <p className="text-sm text-gray-600">Decentralized Student Voting</p>
               </div>
             </Link>
@@ -98,16 +102,16 @@ const Navigation = ({
             </nav>
           </div>
           
-          <div className="flex items-center space-x-4">
+          {/* <div className="flex items-center space-x-4">
             {/* Clerk Authentication */}
-            <SignedOut>
+            {/* <SignedOut>
               <SignInButton>
                 <Button variant="outline">
                   Sign In
                 </Button>
               </SignInButton>
-            </SignedOut>
-            <SignedIn>
+            </SignedOut> */}
+            {/* <SignedIn>
               <UserButton 
                 appearance={{
                   elements: {
@@ -115,10 +119,10 @@ const Navigation = ({
                   }
                 }}
               />
-            </SignedIn>
+            </SignedIn> */}
 
             {/* MetaMask Wallet Connection */}
-            {isWalletConnected ? (
+            {/* {isWalletConnected ? (
               <div className="flex items-center space-x-3">
                 <div className="flex items-center space-x-2 bg-green-50 px-3 py-2 rounded-lg">
                   <div className="h-2 w-2 bg-green-500 rounded-full"></div>
@@ -137,7 +141,42 @@ const Navigation = ({
                 {isConnecting ? 'Connecting...' : 'Connect MetaMask'}
               </Button>
             )}
+          </div> */} 
+
+            <div className="flex items-center space-x-4">
+      {/* Clerk Authentication */}
+      <SignedOut>
+        <SignInButton>
+          <Button variant="outline">Sign In</Button>
+        </SignInButton>
+      </SignedOut>
+      <SignedIn>
+        <UserButton 
+          appearance={{ elements: { avatarBox: "h-8 w-8" } }} 
+        />
+      </SignedIn>
+
+      {/* MetaMask Wallet Connection */}
+      {isWalletConnected ? (
+        <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 bg-green-50 px-3 py-2 rounded-lg">
+            <div className="h-2 w-2 bg-green-500 rounded-full"></div>
+            <span className="text-sm font-medium text-green-800">{walletAddress}</span>
           </div>
+          <Button variant="outline" onClick={onDisconnectWallet}>
+            Disconnect Wallet
+          </Button>
+        </div>
+      ) : (
+        <Button 
+          onClick={onConnectWallet}
+          disabled={isConnecting}
+          className="bg-blue-600 hover:bg-blue-700"
+        >
+          {isConnecting ? 'Connecting...' : 'Connect MetaMask'}
+        </Button>
+      )}
+    </div>
         </div>
       </div>
     </header>
