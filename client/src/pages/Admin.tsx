@@ -19,9 +19,9 @@ const Admin = () => {
   };
 
   const recentUsers = [
-    { id: 1, name: 'Alice Johnson', email: 'alice@university.edu', status: 'verified', joinDate: '2024-06-12' },
-    { id: 2, name: 'Bob Smith', email: 'bob@university.edu', status: 'pending', joinDate: '2024-06-11' },
-    { id: 3, name: 'Carol Davis', email: 'carol@university.edu', status: 'verified', joinDate: '2024-06-10' },
+    { id: 1, name: 'atharv navatre', email: 'alice@university.edu', status: 'verified', joinDate: '2024-06-12' },
+    { id: 2, name: 'vaibhav yadav', email: 'bob@university.edu', status: 'pending', joinDate: '2024-06-11' },
+    { id: 3, name: 'pruthvi gavhane', email: 'carol@university.edu', status: 'verified', joinDate: '2024-06-10' },
   ];
 
   const flaggedActivities = [

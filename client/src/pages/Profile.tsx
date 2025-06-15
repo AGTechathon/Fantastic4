@@ -17,7 +17,7 @@ const Profile = () => {
     studentId: 'ST2021001234',
     year: 'Junior',
     major: 'Computer Science',
-    joinDate: user?.createdAt ? new Date(user.createdAt).toISOString().split('T')[0] : '2024-01-15',
+    joinDate: user?.createdAt ? new Date(user.createdAt).toISOString().split('T')[0] : '2025-01-15',
     verified: user?.emailAddresses?.[0]?.verification?.status === 'verified'
   });
 
@@ -38,11 +38,11 @@ const Profile = () => {
   };
 
   const votingHistory = [
-    { id: 1, proposal: 'Student Union Budget Allocation', date: '2024-06-10', choice: 'Events & Activities', result: 'Won' },
-    { id: 2, proposal: 'Campus Sustainability Initiative', date: '2024-06-05', choice: 'Solar Panel Installation', result: 'Won' },
-    { id: 3, proposal: 'Library Operating Hours', date: '2024-05-28', choice: 'Yes, 24/7 access', result: 'Won' },
-    { id: 4, proposal: 'Campus Parking Policy', date: '2024-05-20', choice: 'Increase Student Spots', result: 'Lost' },
-    { id: 5, proposal: 'Dining Hall Menu Changes', date: '2024-05-15', choice: 'More Vegetarian Options', result: 'Won' },
+    { id: 1, proposal: 'Student Union Budget Allocation', date: '2025-06-10', choice: 'Events & Activities', result: 'Won' },
+    { id: 2, proposal: 'Campus Sustainability Initiative', date: '2025-06-05', choice: 'Solar Panel Installation', result: 'Won' },
+    { id: 3, proposal: 'Library Operating Hours', date: '2025-05-28', choice: 'Yes, 24/7 access', result: 'Won' },
+    { id: 4, proposal: 'Campus Parking Policy', date: '2025-05-20', choice: 'Increase Student Spots', result: 'Lost' },
+    { id: 5, proposal: 'Dining Hall Menu Changes', date: '2025-05-15', choice: 'More Vegetarian Options', result: 'Won' },
   ];
 
   const stats = {

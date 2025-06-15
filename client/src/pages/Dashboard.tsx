@@ -20,9 +20,9 @@ const Dashboard = () => {
   };
 
   const recentActivity = [
-    { id: 1, action: 'Voted on', proposal: 'Student Union Budget Allocation', date: '2024-06-10', result: 'winning' },
-    { id: 2, action: 'Created', proposal: 'Library Hours Extension', date: '2024-06-08', result: 'pending' },
-    { id: 3, action: 'Voted on', proposal: 'Campus Sustainability Initiative', date: '2024-06-05', result: 'losing' },
+    { id: 1, action: 'Voted on', proposal: 'Student Union Budget Allocation', date: '2025-06-10', result: 'winning' },
+    { id: 2, action: 'Created', proposal: 'Library Hours Extension', date: '2025-06-08', result: 'pending' },
+    { id: 3, action: 'Voted on', proposal: 'Campus Sustainability Initiative', date: '2025-06-05', result: 'losing' },
   ];
 
   const votingTrends = [
@@ -214,6 +214,27 @@ const Dashboard = () => {
           </Card>
         </div>
           </div>
+          <footer className="border-t bg-white/80 backdrop-blur-sm mt-16">
+                  <div className="container mx-auto px-4 py-8">
+                    <div className="text-center">
+                      <div className="flex items-center justify-center space-x-3 mb-4">
+                        <div className="w-11 h-11 rounded-lg overflow-hidden">
+    <img
+      src="https://img.freepik.com/premium-photo/flat-glowing-blockchain-nodes-with-digital-chains-isolated-white-background-concept-as-two-glo_980716-680764.jpg?semt=ais_hybrid&w=740"
+      alt="CampusVote Logo"
+      className="w-full h-full object-cover"
+    />
+  </div>
+                        <span className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                CampusVote
+              </span>
+                      </div>
+                      <p className="text-gray-600 text-sm">
+                        Powered by Solana blockchain • Secure • Transparent • Democratic
+                      </p>
+                    </div>
+                  </div>
+                </footer>
         </SignedIn>
     </>
   );

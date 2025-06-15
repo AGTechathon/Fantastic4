@@ -41,7 +41,7 @@ const Index = () => {
       description: 'How should we allocate the $50,000 student union budget for the upcoming semester?',
       options: ['Events & Activities (40%)', 'Facility Improvements (35%)', 'Emergency Fund (25%)'],
       votes: [156, 134, 89],
-      endDate: '2024-07-01',
+      endDate: '2025-07-01',
       status: 'active',
       totalVotes: 379
     },
@@ -51,7 +51,7 @@ const Index = () => {
       description: 'Which sustainability project should be prioritized this year?',
       options: ['Solar Panel Installation', 'Bike Sharing Program', 'Waste Reduction Campaign'],
       votes: [203, 167, 145],
-      endDate: '2024-06-25',
+      endDate: '2025-06-25',
       status: 'active',
       totalVotes: 515
     },
@@ -61,7 +61,7 @@ const Index = () => {
       description: 'Should the library extend its operating hours during finals week?',
       options: ['Yes, 24/7 access', 'Yes, until 2 AM', 'Keep current hours'],
       votes: [289, 156, 67],
-      endDate: '2024-06-20',
+      endDate: '2025-06-20',
       status: 'ended',
       totalVotes: 512
     }
@@ -590,9 +590,13 @@ const Index = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
             <div className="flex items-center justify-center space-x-3 mb-4">
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-lg">
-                <Vote className="h-5 w-5 text-white" />
-              </div>
+              <div className="w-11 h-11 rounded-lg overflow-hidden">
+    <img
+      src="https://img.freepik.com/premium-photo/flat-glowing-blockchain-nodes-with-digital-chains-isolated-white-background-concept-as-two-glo_980716-680764.jpg?semt=ais_hybrid&w=740"
+      alt="CampusVote Logo"
+      className="w-full h-full object-cover"
+    />
+  </div>
               <span className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 CampusVote
               </span>
