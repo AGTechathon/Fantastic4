@@ -73,6 +73,13 @@ Pruthviraj Gavhane
 
 
 
+
+
+
+
+
+      
+
 **User Flow: CampusVote Voting Process**
 
 _1. Sign In (Student Login via OTP or Clerk)_
