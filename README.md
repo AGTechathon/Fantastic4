@@ -73,3 +73,36 @@ Pruthviraj Gavhane
 
 
 
+**User Flow: CampusVote Voting Process**
+
+_1. Sign In (Student Login via OTP or Clerk)_
+User enters their Student ID/email.
+
+An OTP is sent to the registered email.
+
+On successful OTP verification, the user is authenticated via Clerk.
+
+
+_2. Connect Wallet (MetaMask Integration)_ 
+After sign-in, the student is prompted to connect their MetaMask wallet.
+
+The wallet is verified on-chain (e.g., through a signed message or event).
+
+This step ties the student’s voting identity to a unique wallet address.
+
+_3. Check Voting Status (One-Person-One-Vote)_ 
+The system checks if this wallet address (or student ID) has already voted:
+
+On-chain: Check a smart contract mapping (e.g., hasVoted[address] == true)
+
+Off-chain (optional): Cross-check with the student ID stored during sign-in
+
+_4. Cast Vote_
+User selects their candidate.
+
+The vote is recorded on the blockchain via a smart contract function like castVote(candidateId).
+
+The voter’s address is marked as voted, preventing future votes.
+
+
+
